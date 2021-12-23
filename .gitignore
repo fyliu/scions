@@ -4,6 +4,8 @@
 
 ### django ###
 *.sqlite3
+app/.coverage
+app/htmlcov
 
 ### dotenv ###
 .env.dev
