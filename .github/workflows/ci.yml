@@ -19,4 +19,13 @@ jobs:
         run: docker-compose -f "docker-compose.yml" up -d --build
 
       - name: Run tests
-        run: docker-compose run web sh -c "python3 manage.py test && flake8"
+        run: docker-compose run web sh -c "python3 manage.py test"
+
+      - name: Lint with flake8
+        run: docker-compose run web sh -c "flake8 ."
+
+      - name: Autoformat with black
+        uses: psf/black@stable
+
+      - name: Autoformat with isort
+        run: docker-compose run web sh -c "isort . --skip migrations"
