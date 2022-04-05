@@ -1,0 +1,22 @@
+name: CI Test Check
+
+on:
+  push:
+    branches: [scions]
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Copy env file
+        run: cp .env.dev-sample .env.dev
+
+      - name: Start containers
+        run: docker-compose -f "docker-compose.yml" up -d --build
+
+      - name: Run tests
+        run: docker-compose run web sh -c "python3 manage.py test && flake8"
