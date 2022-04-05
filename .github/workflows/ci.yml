@@ -26,6 +26,8 @@ jobs:
 
       - name: Autoformat with black
         uses: psf/black@stable
+        with:
+          options: "--check --diff --exclude=migrations"
 
       - name: Autoformat with isort
         run: docker-compose run web sh -c "isort . --skip migrations"
