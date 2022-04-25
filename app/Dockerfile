@@ -10,8 +10,12 @@ ENV PYTHONUNBUFFERED 1
 
 # install system dependencies
 RUN apt-get update \
-  && apt-get -y install netcat gcc postgresql \
-  && apt-get clean
+  && apt-get --no-install-recommends install -y \
+  netcat=1.10-46 \
+  gcc=4:10.2.1-1 \
+  postgresql=13+225 \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 # install dependencies
 RUN pip install --no-cache-dir pip~=21.3.1
@@ -20,8 +24,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # copy entrypoint.sh
 COPY ./entrypoint.sh .
-RUN sed -i 's/\r$//g' /usr/src/app/entrypoint.sh
-RUN chmod +x /usr/src/app/entrypoint.sh
+RUN sed -i 's/\r$//g' /usr/src/app/entrypoint.sh \
+  && chmod +x /usr/src/app/entrypoint.sh
 
 # copy project
 COPY . .
